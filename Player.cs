@@ -6,8 +6,11 @@ public class Player : MonoBehaviour
 {
     Rigidbody2D rig;
     Animator anime;
+    private bool isJumping;
+    private bool doubleJump;
     public float speed = 5;
     public float jumpForce;
+
 
     void Start()
     {
@@ -18,7 +21,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move();
-        //rig.velocity = new Vector2(horizontal) * Time.deltaTime * speed; 
+        Jump();
     }
 
     void Move()
@@ -41,6 +44,31 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
+        if(Input.GetButtonDown("Jump"))
+        {   
+            //isJumping == false
+            if(!isJumping)
+            {
+                rig.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                doubleJump = true;
+                isJumping = true;
+            }
+            else
+            {
+                if(doubleJump)
+                {
+                    rig.AddForce(new Vector2(0, jumpForce * 2), ForceMode2D.Impulse);
+                    doubleJump = false;
+                }
+            }
+        }
+    }
 
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if(coll.gameObject.layer == 8)
+        {
+            isJumping = false;
+        }
     }
 }
