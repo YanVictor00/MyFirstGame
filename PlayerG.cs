@@ -36,13 +36,31 @@ public class Player : MonoBehaviour
         //se a variável movement fot menor que zero ele vira o eixo Y a 180 graus.
         if(movement < 0)
         {
+            //se isJumping for falso animar o player correndo
+            if(!isJumping)
+            {
+                anime.SetInteger("transition", 1);
+            }
+
             transform.eulerAngles = new Vector3(0, 180f, 0);
         }
 
-        //se a variável movement fot maior que zero ele vira o eixo Y a 0 graus.
+        //se a variável movement for maior que zero ele vira o eixo Y a 0 graus.
         if(movement > 0)
-        {
+        {   
+            //se isJumping for falso animar o player correndo
+            if(!isJumping)
+            {
+                anime.SetInteger("transition", 1);
+            }
+
             transform.eulerAngles = new Vector3(0, 0, 0);
+        }
+
+        //se movement for igual a ZERO e isJumping for falso animar player pulando.
+        if(movement == 0 && !isJumping)
+        {
+            anime.SetInteger("transition", 0);
         }
     }
 //método de pulo ( sistema de pulo )
@@ -53,7 +71,9 @@ public class Player : MonoBehaviour
         {   
             //se isJumping == false
             if(!isJumping)
-            {
+            {   
+                //animação de pulo
+                anime.SetInteger("transition", 2);
                 //adionar uma força eixo Y no rig com impulso
                 rig.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
                 //se a tecla Space for pressionada
@@ -65,17 +85,20 @@ public class Player : MonoBehaviour
             {
                 if(doubleJump)
                 {
-                    rig.AddForce(new Vector2(0, jumpForce * 2), ForceMode2D.Impulse);
+                    anime.SetInteger("transition", 2);
+                    rig.AddForce(new Vector2(0, jumpForce * 1.2f), ForceMode2D.Impulse);
                     doubleJump = false;
                 }
             }
         }
     }
-
+    //método de colisão com a camada Ground( Chão )
     void OnCollisionEnter2D(Collision2D coll)
-    {
+    {   
+        //se gabeObject collidir com a camada 8
         if(coll.gameObject.layer == 8)
         {
+            //isJumping recebe false
             isJumping = false;
         }
     }
