@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 //método inicial
     void Start()
     {
+    //GetComponents
     rig = GetComponent<Rigidbody2D>();    
     anime = GetComponent<Animator>();
     }
@@ -47,7 +48,7 @@ public class Player : MonoBehaviour
             {
                 anime.SetInteger("transition", 1);
             }
-
+            //vira o player a 180 graus no eixo Y
             transform.eulerAngles = new Vector3(0, 180f, 0);
         }
 
@@ -59,7 +60,7 @@ public class Player : MonoBehaviour
             {
                 anime.SetInteger("transition", 1);
             }
-
+            //vira o player a 0 graus no eixo Y (posição de fábrica)
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
 
@@ -87,12 +88,15 @@ public class Player : MonoBehaviour
                 //se a tecla Space for pressionada
                 isJumping = true;
             }
+            //se não
             else
-            {
+            {   //se pulo duplo for verdadeiro
                 if(doubleJump)
-                {
+                {   //animar
                     anime.SetInteger("transition", 2);
+                    //aplicar mais uma força
                     rig.AddForce(new Vector2(0, jumpForce * 1.2f), ForceMode2D.Impulse);
+                    //tornar pulo duplo false
                     doubleJump = false;
                 }
             }
@@ -118,14 +122,16 @@ public class Player : MonoBehaviour
             anime.SetInteger("transition", 3);
             //instanciando uma váriavel local da flecha na posição e rotação do GameObject firePoint
             GameObject Bow = Instantiate(bow, firePoint.position, firePoint.rotation);
-
+            //se o transform rotation Y for igual a 0, no caso o player virado para a direita
             if(transform.rotation.y == 0)
-            {
+            {   
+                //acessar o script Bow e tornar a variável (isRight) True
                 Bow.GetComponent<Bow>().isRight = true;
             }
-
+            //se o transform rotation Y for igual a 180, no caso o player virado para a esquerda
             if(transform.rotation.y == 180)
             {
+                //acessar o script Bow e tornar a variável (isRight) false
                 Bow.GetComponent<Bow>().isRight = false;
             }
 
