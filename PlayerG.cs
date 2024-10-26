@@ -6,28 +6,34 @@ public class Player : MonoBehaviour
 {//Variáveis
     Rigidbody2D rig;
     Animator anime;
+    private float movement;
+    public GameObject bow;
+    public Transform firePoint;
     private bool isJumping;
     private bool doubleJump;
+    private bool isFire;
     public float speed = 5;
     public float jumpForce;
 
-//método
+//método inicial
     void Start()
     {
     rig = GetComponent<Rigidbody2D>();    
     anime = GetComponent<Animator>();
     }
-//método
+//método frame por frame
     void Update()
-    {   //chamandoo método de movimentação e pulo.
+    {   //chamandoo métodos.
         Move();
         Jump();
+        BowFire();
     }
+
 //método de movimentação (sistema de movimentação)
     void Move()
     {    
-        //nova variável do tipo float recebe o Input.GetAxis( Mecânica de tecla de movimentação 2D )
-        float movement = Input.GetAxis("Horizontal");
+        //variável recebe o Input.GetAxis( Mecânica de tecla de movimentação 2D )
+        movement = Input.GetAxis("Horizontal");
         Debug.Log(movement);
 
         // Adiciona velocidade ao corpo do personagem no eixo x e y.
@@ -58,7 +64,7 @@ public class Player : MonoBehaviour
         }
 
         //se movement for igual a ZERO e isJumping for falso animar player pulando.
-        if(movement == 0 && !isJumping)
+        if(movement == 0 && !isJumping && !isFire)
         {
             anime.SetInteger("transition", 0);
         }
@@ -92,6 +98,44 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+     //Método da habilade do ArcoFogo
+    void BowFire()
+    {
+        //chamando a corrotina
+       StartCoroutine(Fire());
+    }
+
+    //corrotina
+    private IEnumerator Fire()
+    {   
+        //se a tecla E for pressionado
+         if(Input.GetKeyDown(KeyCode.E))
+        {   
+            //isFire recebe True
+            isFire = true;
+            //animação 3 do transition é ativada
+            anime.SetInteger("transition", 3);
+            //instanciando uma váriavel local da flecha na posição e rotação do GameObject firePoint
+            GameObject Bow = Instantiate(bow, firePoint.position, firePoint.rotation);
+
+            if(transform.rotation.y == 0)
+            {
+                Bow.GetComponent<Bow>().isRight = true;
+            }
+
+            if(transform.rotation.y == 180)
+            {
+                Bow.GetComponent<Bow>().isRight = false;
+            }
+
+            //depois de 1 segundo
+            yield return new WaitForSeconds(0.2f);
+            //voltar para animação 0 do transition (que é o "iddle")
+            anime.SetInteger("transition", 0);
+        }
+    }
+
     //método de colisão com a camada Ground( Chão )
     void OnCollisionEnter2D(Collision2D coll)
     {   
