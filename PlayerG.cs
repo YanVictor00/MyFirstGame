@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     }
 //método frame por frame
     void Update()
-    {   //chamandoo métodos.
+    {   //chamandoo métodos e ação do Player
         Move();
         Jump();
         BowFire();
@@ -100,6 +100,7 @@ public class Player : MonoBehaviour
                     doubleJump = false;
                 }
             }
+            anime.SetInteger("transition", 0);
         }
     }
 
@@ -137,6 +138,8 @@ public class Player : MonoBehaviour
 
             //depois de 1 segundo
             yield return new WaitForSeconds(0.2f);
+            //isFire recebe False
+            isFire = false;
             //voltar para animação 0 do transition (que é o "iddle")
             anime.SetInteger("transition", 0);
         }
