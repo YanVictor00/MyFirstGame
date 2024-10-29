@@ -7,6 +7,7 @@ public class Bow : MonoBehaviour
 //variáveis
     private Rigidbody2D rig;
     public float speed;
+    public int damage;
     public bool isRight;
 //método inicial
     void Start()
@@ -31,5 +32,14 @@ public class Bow : MonoBehaviour
             rig.velocity = Vector2.left * speed;
         }
        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Enemy")
+        {
+            collision.GetComponent<EnemyGuy>().Damage(damage);
+            Destroy(gameObject);
+        }
     }
 }
