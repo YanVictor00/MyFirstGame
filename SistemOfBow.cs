@@ -33,12 +33,15 @@ public class Bow : MonoBehaviour
         }
        
     }
-
+//Método de colisão de dano da flecha
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //se o gameObject collidir com outro da tag "Enemy" 
         if(collision.gameObject.tag == "Enemy")
         {
+            //atualizar o método Damage do Script EnemyGuy, recebendo damage.
             collision.GetComponent<EnemyGuy>().Damage(damage);
+            //Em seguida destruindo o gameObject (a Flecha)
             Destroy(gameObject);
         }
     }
