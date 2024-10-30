@@ -4,6 +4,7 @@ using UnityEngine;
 //classe geral
 public class Player : MonoBehaviour
 {//Variáveis
+    public int health = 3;
     Rigidbody2D rig;
     Animator anime;
     private float movement;
@@ -21,6 +22,9 @@ public class Player : MonoBehaviour
     //GetComponents
     rig = GetComponent<Rigidbody2D>();    
     anime = GetComponent<Animator>();
+
+    //usando o static para atualizar a quantidade de vidas do player
+    GameController.instance.UpdateLives(health);
     }
 //método frame por frame
     void Update()
@@ -144,6 +148,22 @@ public class Player : MonoBehaviour
             anime.SetInteger("transition", 0);
         }
     }
+
+    public void Damage(int dmg)
+    {
+        //o health vai ser o decrescido do dmg
+        health -= dmg;
+        //atualizando o health no GameController class
+        GameController.instance.UpdateLives(health);
+        
+        if(health <= 0)
+        {
+            //Destroy(gameObject);
+            Debug.Log("Game Over");
+        }
+
+    }
+
 
     //método de colisão com a camada Ground( Chão )
     void OnCollisionEnter2D(Collision2D coll)
