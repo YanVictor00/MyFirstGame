@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
     //GetComponents
     rig = GetComponent<Rigidbody2D>();    
     anime = GetComponent<Animator>();
-
     //usando o static para atualizar a quantidade de vidas do player
     GameController.instance.UpdateLives(health);
     }
@@ -155,11 +154,24 @@ public class Player : MonoBehaviour
         health -= dmg;
         //atualizando o health no GameController class
         GameController.instance.UpdateLives(health);
+        //chamando a animação de hit
+        anime.SetTrigger("hit");
+
+             //se o transform rotation Y for igual a 0, no caso o player virado para a direita
+             if(transform.rotation.y == 0)
+            {   
+               transform.position += new Vector3(-0.5f,0,0);
+            }
+            //se o transform rotation Y for igual a 180, no caso o player virado para a esquerda
+            if(transform.rotation.y == 180)
+            {
+                transform.position += new Vector3(5f,0,0);
+            }
         
-        if(health <= 0)
+        if(health <= 0f)
         {
             //Destroy(gameObject);
-            Debug.Log("Game Over");
+            //Debug.Log("Game Over");
         }
 
     }
