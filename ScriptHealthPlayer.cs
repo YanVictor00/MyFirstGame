@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthPlayer : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     //variáveis
     public Text healthText;
     //variável static
     public static GameController instance;
 
-    void Start()
+    //método chamado antes do Start na ordem de execução
+    void Awake()
     {   
-        //tornando static para outro script
+        //tornando static para acessar de outro script
         instance = this;
     }
 
