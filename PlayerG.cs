@@ -176,9 +176,12 @@ public class Player : MonoBehaviour
 
     }
 
+    // Incrementando vida (com o valor inteiro)
     public void IncreaseLife(int value)
     {
+        //health aumento o valor
         health += value;
+        //GameController instacia updateslives (health)
         GameController.instance.UpdateLives(health);
     }
 
