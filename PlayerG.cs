@@ -176,6 +176,12 @@ public class Player : MonoBehaviour
 
     }
 
+    public void IncreaseLife(int value)
+    {
+        health += value;
+        GameController.instance.UpdateLives(health);
+    }
+
 
     //método de colisão com a camada Ground( Chão )
     void OnCollisionEnter2D(Collision2D coll)
