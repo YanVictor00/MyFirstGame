@@ -1,2 +1,2 @@
 # MyFirstGame
- Aqui coloco meu primeiro Game feito em C# (Unity)
+ Meu primeiro jogo feito na Unity codando em C#
