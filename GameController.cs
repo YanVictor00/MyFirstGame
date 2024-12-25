@@ -21,6 +21,14 @@ public class GameController : MonoBehaviour
     {
         
     }
+
+    public void UpdateScore(int value)
+        {
+            score += value;
+            scoreText.text = score.ToString();
+        }
+
+
     //método para passar o valor de vidas para o Text do Canva 
     public void UpdateLives(int value)
     {
