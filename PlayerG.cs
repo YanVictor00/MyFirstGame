@@ -38,7 +38,6 @@ public class Player : MonoBehaviour
     {    
         //variável recebe o Input.GetAxis( Mecânica de tecla de movimentação 2D )
         movement = Input.GetAxis("Horizontal");
-        Debug.Log(movement);
 
         // Adiciona velocidade ao corpo do personagem no eixo x e y.
         rig.velocity = new Vector2(movement * speed, rig.velocity.y);
@@ -170,18 +169,14 @@ public class Player : MonoBehaviour
         
         if(health <= 0f)
         {
-            //Destroy(gameObject);
-            //Debug.Log("Game Over");
+            GameController.instance.GameOver();   
         }
 
     }
 
-    // Incrementando vida (com o valor inteiro)
     public void IncreaseLife(int value)
     {
-        //health aumento o valor
         health += value;
-        //GameController instacia updateslives (health)
         GameController.instance.UpdateLives(health);
     }
 
@@ -194,6 +189,10 @@ public class Player : MonoBehaviour
         {
             //isJumping recebe false
             isJumping = false;
+        }
+        if(coll.gameObject.layer == 9)
+        {
+            GameController.instance.GameOver();
         }
     }
 }

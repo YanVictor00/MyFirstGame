@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class GameController : MonoBehaviour
     public Text healthText;
     //variável static
     public static GameController instance;
+
+    public GameObject pauseObj;
+    private bool isPaused = false;
+
+    public GameObject gameOverObj;
 
     public int score;
     public Text scoreText;
@@ -24,12 +30,15 @@ public class GameController : MonoBehaviour
     void Start()
     {
         totalScore = PlayerPrefs.GetInt("score");
-        Debug.Log(PlayerPrefs.GetInt("score"));
     }
 
     void Update()
     {
-        
+        // Verifica se o jogador pressionou a tecla de pause
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            PauseGame();
+        }
     }
 
     public void UpdateScore(int value)
@@ -46,4 +55,22 @@ public class GameController : MonoBehaviour
         // "x " + o valor do texto irá receber o valor do parâmetro covertido em string
         healthText.text = "x " + value.ToString();
     }
+
+   public void PauseGame()
+    {
+        isPaused = !isPaused; 
+        pauseObj.SetActive(isPaused); 
+        Time.timeScale = isPaused ? 0f : 1f; 
+    }
+
+    public void GameOver()
+    {
+        gameOverObj.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
+    }
+
 }
