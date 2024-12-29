@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public int health = 3;
     Rigidbody2D rig;
     Animator anime;
-    private float movement;
+    public float movement;
     public GameObject bow;
     public Transform firePoint;
     private bool isJumping;
@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     private bool isFire;
     public float speed = 5;
     public float jumpForce;
+    public bool isMobile;
+    public bool touchJump;
+    public bool touchFire;
 
 //método inicial
     void Start()
@@ -36,8 +39,12 @@ public class Player : MonoBehaviour
 //método de movimentação (sistema de movimentação)
     void Move()
     {    
-        //variável recebe o Input.GetAxis( Mecânica de tecla de movimentação 2D )
-        movement = Input.GetAxis("Horizontal");
+        //se isMobile for False
+        if(!isMobile)
+        {
+            //variável recebe o Input.GetAxis( Mecânica de tecla de movimentação 2D )
+            movement = Input.GetAxis("Horizontal");
+        }
 
         // Adiciona velocidade ao corpo do personagem no eixo x e y.
         rig.velocity = new Vector2(movement * speed, rig.velocity.y);
@@ -75,8 +82,8 @@ public class Player : MonoBehaviour
 //método de pulo ( sistema de pulo )
     void Jump()
     {   
-        //Se precionar o botão Jump(Space)
-        if(Input.GetButtonDown("Jump"))
+        //Se precionar o botão Jump(Space) ou touchJump for verdadeiro
+        if(Input.GetButtonDown("Jump") || touchJump)
         {   
             //se isJumping == false
             if(!isJumping)
@@ -103,11 +110,13 @@ public class Player : MonoBehaviour
                 }
             }
             anime.SetInteger("transition", 0);
+
+            touchJump = false;
         }
     }
 
      //Método da habilade do ArcoFogo
-    void BowFire()
+     void BowFire()
     {
         //chamando a corrotina
        StartCoroutine(Fire());
@@ -117,8 +126,9 @@ public class Player : MonoBehaviour
     private IEnumerator Fire()
     {   
         //se a tecla E for pressionado
-         if(Input.GetKeyDown(KeyCode.E))
+         if(Input.GetKeyDown(KeyCode.E) || touchFire)
         {   
+            touchFire = false;
             //isFire recebe True
             isFire = true;
             //animação 3 do transition é ativada
@@ -144,6 +154,7 @@ public class Player : MonoBehaviour
             isFire = false;
             //voltar para animação 0 do transition (que é o "iddle")
             anime.SetInteger("transition", 0);
+
         }
     }
 
